@@ -11,7 +11,7 @@ from tkinter import *
 
 #PROBLEMS:
 #I didnt notice any problem that affects the working of it. But the code is kind a mess yet. I used a lot of def's and global variable and in the future i wanna use classes
-#and reduce the quantity of functions but without changing the logic of the global variable. Beyond this I intend to separate the code in differents filles in sake of organizing it. 
+#and reduce the quantity of functions but without changing the logic of the global variable. Beyond this I intend to separate the code in differents files in sake of organizing it. 
 
 root = Tk()
 global f_num
