@@ -10,7 +10,7 @@ from tkinter import *
 #in the right end of the screen, this is why I used 3 Entrys for the screen.
 
 #PROBLEMS:
-#I didnt notice any problem that affects the working of it. But the code is kind a mess yet. I used a lot of def's and global variable and in the future i wanna use classes
+#I didnt notice any problem that affects the working of it(with exception that i didnt restringe the user of typing letters and any other wrong stuff). But the code is kind a mess yet. I used a lot of def's and global variable and in the future i wanna use classes
 #and reduce the quantity of functions but without changing the logic of the global variable. Beyond this I intend to separate the code in differents files in sake of organizing it. 
 #It can be reduced at least 80 lines I guess.
 
