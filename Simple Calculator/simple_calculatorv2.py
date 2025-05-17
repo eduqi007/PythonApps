@@ -10,9 +10,8 @@ from tkinter import *
 #in the right end of the screen, this is why I used 3 Entrys for the screen.
 
 #PROBLEMS:
-#I didnt notice any problem that affects the working of it(with exception that i didnt restringe the user of typing letters and any other wrong stuff). But the code is kind a mess yet. I used a lot of def's and global variable and in the future i wanna use classes
-#and reduce the quantity of functions but without changing the logic of the global variable. Beyond this I intend to separate the code in differents files in sake of organizing it. 
-#It can be reduced at least 80 lines I guess.
+#I didnt notice any problem that affects the working of it. But the code is kind a mess yet. I used a lot of def's and global variable and in the future i wanna use classes
+#and reduce the quantity of functions but without changing the logic of the global variable. Beyond this I intend to separate the code in differents filles in sake of organizing it. 
 
 root = Tk()
 global f_num
@@ -35,11 +34,17 @@ mult_or_div = 1
 
 def call_ans():
     global f_ans
-
+    global f_num
+    global mult_or_sum_2
+    global mult_or_sum_1
+    global sign_fix
+    sign_fix=1
+    f_num=0
+    mult_or_sum_1=0
+    mult_or_sum_2=1
     display.delete(0,END)
     result_display.delete(0,END)
     display.delete(0,END)
-
     display.insert(0, f_ans)
 
 def insert_number(number):
