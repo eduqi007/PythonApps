@@ -46,6 +46,10 @@ def getting_directory():
         print(f"Error! 000x1")
 
 def loading_image_source(images_file_path):
+    global x_screen
+    global y_screen
+    global infoLabel
+    global c
     # Stores the image types that the program should be able to recognize in the folder containing the images to be displayed
     image_extensions = (".png", ".jpg", ".jpeg", ".bmp", ".gif", ".tiff", ".jfif", ".avif", ".webp")
 
@@ -63,6 +67,8 @@ def loading_image_source(images_file_path):
             # Checks whether the current file is an image of a recognized type from image_extensions
             if image_name.lower().endswith(image_extensions):
                 images_name.append(image_name)
+    infoLabel = Label(root, text=f"{c+1} image of {len(images_name)}")
+    infoLabel.place(x= 22//23*x_screen, y=22//23*y_screen)
     return images_name
 
 
@@ -101,7 +107,7 @@ def loading_image(image_source):
 
 
 def window_resize(event):
-    global img_ratio, images_path, c, img
+    global img_ratio, images_path, c, img, infoLabel
     if event.widget == root:
         x_screen = event.width
         y_screen = event.height
@@ -119,11 +125,13 @@ def window_resize(event):
         backButton.place(x=(x_screen - 105) // 2, rely=0.9)
         exitButton.place(x=13 / 14 * (x_screen), rely=0.9)
         uploadButton.place(x=10/ 13 * (x_screen), rely=0.9)
+        infoLabel.place(x= 22//23*x_screen, y=22//23*y_screen)
 
 def change_image(direction):
     global c
     global images_name
     global img
+    global infoLabel
     if direction == "next":
         if c < len(images_name) - 1:
             c += 1
@@ -136,6 +144,8 @@ def change_image(direction):
     img, nouse = loading_image(images_name[c])
     imgLabel.config(image=img)
     imgLabel.place(x=(x_screen - resized_x) // 2, y=y_screen // 30)
+    infoLabel.config(text=f"{c+1} image of {len(images_name)}")
+    infoLabel.place(x= 22//23*x_screen, y=22//23*y_screen)
     print(c)
 
 
@@ -152,10 +162,12 @@ backButton = Button(root, text="<<", padx=12, pady=5, command=lambda: change_ima
 exitButton = Button(root, text="Exit", padx=20, pady=5, command=lambda: change_image("exit"))
 uploadButton = Button(root, text="Select a directory", padx=20, pady=5, command=lambda: getting_directory())
 
+
 nextButton.place(x=(x_screen) // 2, rely=0.9)
 backButton.place(x=(x_screen - 105) // 2, rely=0.9)
 exitButton.place(x=12 / 13 * (x_screen), rely=0.9)
 uploadButton.place(x=10/ 13 * (x_screen), rely=0.9)
+
 
 
 getting_directory()
@@ -163,4 +175,5 @@ getting_directory()
 # Binds window resize event
 root.bind("<Configure>", window_resize)
 root.mainloop()
+
 
