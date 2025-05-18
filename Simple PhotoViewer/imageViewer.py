@@ -5,6 +5,8 @@
 # and eventually turn it into a program that users can use daily on their operating system,
 # simply by opening the app automatically when trying to view any image.
 
+#Observation: Soon I am going to Organize it better using classes and separating all of it in different archives
+
 
 from tkinter import *
 from PIL import ImageTk, Image
