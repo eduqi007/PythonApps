@@ -1,3 +1,4 @@
+#SIMPLE IMAGEVIEWER VERSION 1.0
 # This project is still in progress. For now, I'm focusing on making every object in the window dynamic.
 # To achieve that, I'm keeping everything very simple at first so I can understand how everything works.
 # Once I finish making everything dynamic, I'll start improving the visual design.
@@ -7,14 +8,42 @@
 
 #Observation: Soon I am going to Organize it better using classes and separating all of it in different archives
 
+#Problems: 1ºSometimes depending of the quantity of images and how large they are the app starts to gets slower to go forward and back and to load the images
+#2º When the window of select a directory opens if u maximize the app and after that select the Folder with the images, the window will get messy until u click to select another fold again.
+#Despite of that this Version is done. I am fixing all this problems in the next versions, I wanna keep this initial code for comparing my own evolving in the future. 
 
 from tkinter import *
+from tkinter import filedialog
 from PIL import ImageTk, Image
 import os
 
 c = 0
 
 root = Tk()
+
+def getting_directory():
+    global c
+    global file_path
+    global images_name
+    global imgLabel
+    c=0
+
+    file_path = f"{filedialog.askdirectory(title="SELECT THE DIRECTORY")}"
+
+
+    images_name = loading_image_source(file_path)
+
+    if not images_name:
+        print("No image found!")
+        return
+    
+    try:
+        img, nouse = loading_image(images_name[c])
+        imgLabel = Label(root, image=img)
+        imgLabel.place(x=(x_screen - resized_x) // 2, y=y_screen // 30)
+        change_image("back")
+    except Exception as e:
+        print(f"Error! 000x1")
 
 def loading_image_source(images_file_path):
     # Stores the image types that the program should be able to recognize in the folder containing the images to be displayed
@@ -89,6 +118,7 @@ def window_resize(event):
         nextButton.place(x=(x_screen) // 2, rely=0.9)
         backButton.place(x=(x_screen - 105) // 2, rely=0.9)
         exitButton.place(x=13 / 14 * (x_screen), rely=0.9)
+        uploadButton.place(x=10/ 13 * (x_screen), rely=0.9)
 
 def change_image(direction):
     global c
@@ -99,9 +129,10 @@ def change_image(direction):
             c += 1
     elif direction == "back":
         if c > 0:
-            c = c - 1
+            c -= 1
     else:
         root.quit()
+        return
     img, nouse = loading_image(images_name[c])
     imgLabel.config(image=img)
     imgLabel.place(x=(x_screen - resized_x) // 2, y=y_screen // 30)
@@ -119,22 +150,15 @@ root.geometry(f"{x_screen}x{y_screen}")
 nextButton = Button(root, text=">>", padx=12, pady=5, command=lambda: change_image("next"))
 backButton = Button(root, text="<<", padx=12, pady=5, command=lambda: change_image("back"))
 exitButton = Button(root, text="Exit", padx=20, pady=5, command=lambda: change_image("exit"))
+uploadButton = Button(root, text="Select a directory", padx=20, pady=5, command=lambda: getting_directory())
 
 nextButton.place(x=(x_screen) // 2, rely=0.9)
 backButton.place(x=(x_screen - 105) // 2, rely=0.9)
 exitButton.place(x=12 / 13 * (x_screen), rely=0.9)
+uploadButton.place(x=10/ 13 * (x_screen), rely=0.9)
 
-# Loading the image    
 
-# Here you pass as a parameter the folder path containing the images you want to load. In the future, I'll make this selectable via a visual interface instead of editing the code.
-file_path = "C:/images"
-
-images_name = loading_image_source(file_path)
-
-img, nouse = loading_image("mario1.png")
-imgLabel = Label(root, image=img)
-
-imgLabel.place(x=(x_screen - resized_x) // 2, y=y_screen // 30)
+getting_directory()
 
 # Binds window resize event
 root.bind("<Configure>", window_resize)
