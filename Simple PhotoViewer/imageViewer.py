@@ -10,103 +10,133 @@
 
 from tkinter import *
 from PIL import ImageTk, Image
+import os
 
-c=0
+c = 0
 
 root = Tk()
 
+def loading_image_source(images_file_path):
+    # Stores the image types that the program should be able to recognize in the folder containing the images to be displayed
+    image_extensions = (".png", ".jpg", ".jpeg", ".bmp", ".gif", ".tiff", ".jfif", ".avif", ".webp")
+
+    # The files matching the selected image types from image_extensions will have their names stored here
+    images_name = []
+
+    # Using the os library (which works like the Windows prompt), it will use the listdir command on the directory passed as a parameter to the function, and through the loop, we'll check all files in the folder
+    for image_name in os.listdir(images_file_path):
+        # Builds the full file path: folder path + file name
+        full_file_path = os.path.join(images_file_path, image_name)
+        
+        # Filters out non-file entries
+        if os.path.isfile(full_file_path):
+
+            # Checks whether the current file is an image of a recognized type from image_extensions
+            if image_name.lower().endswith(image_extensions):
+                images_name.append(image_name)
+    return images_name
+
+
 def loading_image(image_source):
-    global y_screen, x_screen, resized_x, img_ratio
+    global y_screen, x_screen, resized_x, img_ratio, file_path
 
     root.update_idletasks()
     x_screen = root.winfo_width()
     y_screen = root.winfo_height()
 
-    #importando a imagem
-    image_load = Image.open(f"images/{image_source}")
+    # Loading the image
+    image_load = Image.open(f"{file_path}/{image_source}")
 
-    #coletando a largura e altura da imagem d
+    # Getting the image's original width and height
     img_x, img_y = image_load.size
 
-    #calculando a proporção da imagem
-    img_ratio = img_x/img_y
+    # Calculating the image aspect ratio
+    img_ratio = img_x / img_y
 
-    #altura da imagem de acordo com a altura da janela
-    img_display_height = y_screen-500
+    # Setting the image height based on the window height
+    img_display_height = y_screen - 150
 
-    #definindo a nova largura com base na altura definida usando a proporção calculada
-    resized_x = int(img_display_height*img_ratio)
+    # Setting the new width based on the previously set height and aspect ratio
+    resized_x = int(img_display_height * img_ratio)
+    if resized_x > x_screen:
+        resized_x = int(resized_x - (resized_x - x_screen))
+        img_display_height = int(resized_x / img_ratio)
 
-    #criando a imagem redimensionada
+    # Creating the resized image
     img_resized = image_load.resize((resized_x, img_display_height))
 
-    #convertendo a imagem para poder usar no tkinter
+    # Converting the image to be used in tkinter
     img_tk = ImageTk.PhotoImage(img_resized)
 
     return img_tk, resized_x
 
 
-
 def window_resize(event):
     global img_ratio, images_path, c, img
     if event.widget == root:
-        x_screen=event.width
-        y_screen=event.height
+        x_screen = event.width
+        y_screen = event.height
 
-        img, img_x = loading_image(images_path[c])
+        img, img_x = loading_image(images_name[c])
         imgLabel.config(image=img)
         new_width = img_x
 
-        #Reposiciona sempre para manter o mesmo lugar
-        delta = x_screen-new_width
-        imgLabel.place(x=delta//2,y=y_screen//10)
+        # Reposition to keep image centered
+        delta = x_screen - new_width
+        imgLabel.place(x=delta // 2, y=y_screen // 30)
 
-        #reposiciona botao
-        nextButton.place(x=(x_screen)//2 ,rely=0.9)
-        backButton.place(x=(x_screen-105)//2,rely=0.9)
-        exitButton.place(x=12/13*(x_screen),rely=0.9)
+        # Reposition buttons
+        nextButton.place(x=(x_screen) // 2, rely=0.9)
+        backButton.place(x=(x_screen - 105) // 2, rely=0.9)
+        exitButton.place(x=13 / 14 * (x_screen), rely=0.9)
 
 def change_image(direction):
     global c
-    global images_path
+    global images_name
     global img
     if direction == "next":
-        if c < len(images_path)-1:
-            c+=1
+        if c < len(images_name) - 1:
+            c += 1
     elif direction == "back":
         if c > 0:
-            c=c-1
+            c = c - 1
     else:
         root.quit()
-    img, nouse = loading_image(images_path[c])
+    img, nouse = loading_image(images_name[c])
     imgLabel.config(image=img)
-    imgLabel.place(x=(x_screen-resized_x)//2,y=y_screen//10)
-    print(c)       
+    imgLabel.place(x=(x_screen - resized_x) // 2, y=y_screen // 30)
+    print(c)
 
 
-#Tamanho Inicial da tela
+# Initial window size
 x_screen = 1024
 y_screen = 720
 
-root.minsize(800,600)
+root.minsize(800, 600)
 root.geometry(f"{x_screen}x{y_screen}")
 
-#interface basica
-nextButton = Button(root, text=">>", padx=12,pady=5, command= lambda: change_image("next"))
-backButton = Button(root, text="<<", padx=12,pady=5, command= lambda: change_image("back"))
-exitButton = Button(root, text="Exit",padx=20,pady=5, command= lambda: change_image("exit"))
+# Basic interface
+nextButton = Button(root, text=">>", padx=12, pady=5, command=lambda: change_image("next"))
+backButton = Button(root, text="<<", padx=12, pady=5, command=lambda: change_image("back"))
+exitButton = Button(root, text="Exit", padx=20, pady=5, command=lambda: change_image("exit"))
 
-nextButton.place(x=(x_screen)//2 ,rely=0.9)
-backButton.place(x=(x_screen-105)//2,rely=0.9)
-exitButton.place(x=12/13*(x_screen),rely=0.9)
+nextButton.place(x=(x_screen) // 2, rely=0.9)
+backButton.place(x=(x_screen - 105) // 2, rely=0.9)
+exitButton.place(x=12 / 13 * (x_screen), rely=0.9)
 
-#Carregando a imagem    
-images_path = ["mario1.png","carro.jpg","image1.png"]
+# Loading the image    
+
+# Here you pass as a parameter the folder path containing the images you want to load. In the future, I'll make this selectable via a visual interface instead of editing the code.
+file_path = "C:/images"
+
+images_name = loading_image_source(file_path)
+
 img, nouse = loading_image("mario1.png")
 imgLabel = Label(root, image=img)
 
-imgLabel.place(x=(x_screen-resized_x)//2,y=y_screen//10)
+imgLabel.place(x=(x_screen - resized_x) // 2, y=y_screen // 30)
 
-#vincula o redimensionamento da tela
+# Binds window resize event
 root.bind("<Configure>", window_resize)
 root.mainloop()
+
