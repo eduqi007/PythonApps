@@ -1,3 +1,11 @@
+# This project is still in progress. For now, I'm focusing on making every object in the window dynamic.
+# To achieve that, I'm keeping everything very simple at first so I can understand how everything works.
+# Once I finish making everything dynamic, I'll start improving the visual design.
+# After that, I plan to make it actually useful by adding the option to upload any image,
+# and eventually turn it into a program that users can use daily on their operating system,
+# simply by opening the app automatically when trying to view any image.
+
+
 from tkinter import *
 from PIL import ImageTk, Image
 
