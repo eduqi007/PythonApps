@@ -51,7 +51,7 @@ def loading_image_source(images_file_path):
     global infoLabel
     global c
     # Stores the image types that the program should be able to recognize in the folder containing the images to be displayed
-    image_extensions = (".png", ".jpg", ".jpeg", ".bmp", ".gif", ".tiff", ".jfif", ".avif", ".webp")
+    image_extensions = (".png", ".jpg", ".jpeg", ".bmp", ".gif", ".tiff", ".jfif", ".avif", ".webp", ".ico")
 
     # The files matching the selected image types from image_extensions will have their names stored here
     images_name = []
@@ -67,7 +67,7 @@ def loading_image_source(images_file_path):
             # Checks whether the current file is an image of a recognized type from image_extensions
             if image_name.lower().endswith(image_extensions):
                 images_name.append(image_name)
-    infoLabel = Label(root, text=f"{c+1} image of {len(images_name)}")
+    infoLabel = Label(root, text=f"{c+1} image of {len(images_name)}", bd=1, relief=SUNKEN)
     infoLabel.place(x= 22//23*x_screen, y=22//23*y_screen)
     return images_name
 
@@ -175,5 +175,4 @@ getting_directory()
 # Binds window resize event
 root.bind("<Configure>", window_resize)
 root.mainloop()
-
 
