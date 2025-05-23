@@ -20,8 +20,21 @@ def handle_mult(state, value):
     state.mult_or_sum_2 = 0
     state.mult_or_div = 1
 
-def handle_mult(state, value):
+def handle_divide(state, value):
     calculation_process(state, value)
     state.mult_or_sum_1 = 1
     state.mult_or_sum_2 = 0
     state.mult_or_div = -1
+
+def handle_equal(state, value):
+    calculation_process(state, value)
+    state.f_ans = state.f_num
+    return state.f_num
+
+def handle_ans(state):
+    state.f_num = 0
+    state.sign_fix = 1
+    state.mult_or_sum_1 = 0
+    state.mult_or_sum_2 = 1
+    return state.f_ans
+
