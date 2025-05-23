@@ -1,0 +1,10 @@
+The problems to be solved:
+
+                                                                        LOGIC PROBLEMS
+1. How I am alterning the multiplication and division using a exponencial, some times if u have 0 and makes 0^(-1) u will get an math error, so I am going to fix it soon. 
+2. The ans function is working, but I made it in a strange way, if u just wanna use de ANS value it will erase the past values so u cant use de ans in the middle of an account, i will change this issue too. 
+
+                                                                         WHATS THE NEWS OF THIS NEW VERSION 3.0?
+(CHANGES IN THE CODE)I refactored the past codes using python POO, and I tried to get this code the most clean and organized as possible separating the UI of the logic of the states of the operation. 
+
+(NEW FUNCTIONS) But in overral we dont have any new functionality in the app, it just changed the design of the code. 
