@@ -1,13 +1,10 @@
-from tkinter import Tk
+import tkinter as tk
 from state import CalculatorState
 import core
 from ui import CalculatorUI
 
-def main():
-    root = Tk()
-    root.title("Simple Calculator - V3")
-    setup_ui(root)
-    root.mainloop()
-
 if __name__ == "__main__":
-    main()
+    root = tk.Tk()
+    state = CalculatorState()
+    app = CalculatorUI(root, state, core)
+    root.mainloop()
