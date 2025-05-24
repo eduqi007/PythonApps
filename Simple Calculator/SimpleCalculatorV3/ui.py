@@ -26,7 +26,6 @@ class CalculatorUI:
         button = lambda txt, r, c, cmd: tk.Button(root, text=txt, padx=40, pady=20, borderwidth=0, command=cmd).grid(row=r, column=c)
 
         for i in range(1,10):
-            print(i)
             button(str(i), 4 - (i - 1) // 3, (i - 1) % 3, lambda n = i: self.insert_number(n))
         button_0 = tk.Button(text="0",padx=40, pady=20, borderwidth = 0, command=lambda: self.insert_number(0)).grid(row=5, column=0, columnspan=1)
 
@@ -44,15 +43,19 @@ class CalculatorUI:
         self.display.insert(0, f"{current}{number}")
     
     def clear(self):
+        backup_ans = self.state.f_ans
+
         self.state.reset()
+
+        self.state.f_ans = backup_ans
+        
         self.display.delete(0, tk.END)
         self.past_display.delete(0, tk.END)
         self.result_display.delete(0, tk.END)
     
     def call_ans(self):
-        self.state.f_num = 0
+        self.result_display.delete(0, tk.END)
         self.display.delete(0, tk.END)
-        self.past_display.delete(0, tk.END)
         self.display.insert(0, str(self.logic.handle_ans(self.state)))
     
     def _common_op(self, handler):
@@ -73,12 +76,15 @@ class CalculatorUI:
         self._common_op(self.logic.handle_mult)
     
     def divide(self):
+        print(f"na divisão {self.state.f_num}")
         self._common_op(self.logic.handle_divide)
     
     def equal(self):
+        print(f"começo do igual{self.state.f_num}")
         self.result_display.delete(0, tk.END)
         val = self.display.get()
         result = self.logic.handle_equal(self.state, val)
+        print(f"depois de calcular a função igual{self.state.f_num}")
         self.result_display.insert(0, str(result))
         self.past_display.delete(0, tk.END)
         self.display.delete(0, tk.END)
